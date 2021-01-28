@@ -1,0 +1,70 @@
+- name: Install gnupg
+  apt:
+    name: gnupg
+    update_cache: yes
+  register: install
+  until: install is success
+  retries: 10
+  delay: 2
+
+- name: Setup repository key from keyserver
+  apt_key:
+    keyserver: "{{ opensips.apt.key.server }}"
+    id: "{{ opensips.apt.key.id }}"
+  register: result
+  until: result is success
+  retries: 10
+  delay: 2
+
+- name: Setup repository file
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: present
+    filename: "{{ item.filename }}"
+  with_items:
+    - repo: "deb {{ opensips.apt.repo }} {{ ansible_distribution_release }} {{ opensips.version }}-{{ opensips.build }}"
+      filename: opensips
+    - repo: "deb {{ opensips.apt.repo }} {{ ansible_distribution_release }} cli-nightly"
+      filename: opensips-cli
+
+- name: Install OpenSIPS
+  apt:
+    name: opensips
+    state: present
+  notify:
+    - opensips enable
+    - opensips restart
+  register: install
+  until: install is success
+  retries: 10
+  delay: 2
+
+- name: Configure OpenSIPS daemon
+  template:
+    owner: opensips
+    group: opensips
+    src: default.j2
+    dest: /etc/default/opensips
+  notify:
+    - opensips restart
+
+- name: Install OpenSIPS CLI
+  apt:
+    name: opensips-cli
+    state: present
+  register: cli
+  until: cli is success
+  retries: 10
+  delay: 2
+
+- name: Install additional modules
+  apt:
+    name: "{{ opensips.modules }}"
+    state: present
+  when: opensips.modules | default([])
+  notify:
+    - opensips restart
+  register: modules
+  until: modules is success
+  retries: 10
+  delay: 2

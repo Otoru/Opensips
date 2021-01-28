@@ -1,0 +1,11 @@
+---
+- name: opensips enable
+  service:
+    name: opensips
+    enabled: yes
+    state: started
+
+- name: opensips restart
+  service:
+    name: opensips
+    state: restarted

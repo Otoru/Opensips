@@ -1,0 +1,17 @@
+---
+opensips:
+  version: 3.1
+  build: releases
+  cli_build: nightly
+  modules: []
+  apt:
+    repo: http://apt.opensips.org
+    key:
+      id: 049AD65B
+      server: keyserver.ubuntu.com
+  daemon:
+    user: opensips
+    group: opensips
+    memory:
+      shared: 64
+      private: 32

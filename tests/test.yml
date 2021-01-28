@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  roles:
+    - role: opensips
+      opensips:
+        version: 3.1
+        build: releases
+        modules:
+          - opensips-postgres-module
+          - opensips-xmlrpc-module
+        daemon:
+          memory:
+            shared: 64
+            private: 32
+          user: opensips
+          group: opensips
+        apt:
+          repo: "http://apt.opensips.org"
+          key:
+            id: "049AD65B"
+            server: keyserver.ubuntu.com

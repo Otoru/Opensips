@@ -1,0 +1,26 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  ansible_cfg_path: ./ansible.cfg
+  require_chef_for_busser: false
+  requires_ansible_repo: true
+  ansible_version: latest
+  name: ansible_playbook
+  hosts: test-kitchen
+  playbook: test.yml
+  roles_path: ../../
+
+platforms:
+  - name: debian-10
+    verifier:
+      inspec_tests:
+        - tests/
+
+verifier:
+  name: inspec
+  sudo_path: true
+
+suites:
+  - name: default
