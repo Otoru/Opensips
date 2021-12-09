@@ -8,7 +8,7 @@ Variables used to control role behavior.
 
 |            variable            |                              description                              |      default value      |
 | ------------------------------ | --------------------------------------------------------------------- | ----------------------- |
-| opensips.version               | Version of OpenSIPS to be installed.                                  | 3.1                     |
+| opensips.version               | Version of OpenSIPS to be installed.                                  | 3.2                     |
 | opensips.build                 | Release build of OpenSIPS to be used.                                 | releases                |
 | opensips.modules               | List of OpenSIPS modules to be installed                              | `[]`                    |
 | opensips.apt.repo              | Repository from which to retrieve installation files.                 | http://apt.opensips.org |
@@ -30,7 +30,7 @@ Here is a small example of how to use this role:
   roles:
     - role: opensips
       opensips:
-        version: 3.1
+        version: 3.2
         build: releases
         modules:
           - opensips-postgres-module
