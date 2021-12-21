@@ -48,6 +48,15 @@
   notify:
     - opensips restart
 
+- name: Create opensips run directory
+  file:
+    path: /var/run/opensips
+    owner: opensips
+    group: opensips
+    state: directory
+    mode: 0775
+    recurse: yes
+
 - name: Install OpenSIPS CLI
   apt:
     name: opensips-cli
